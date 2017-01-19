@@ -13,44 +13,57 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Hero extends GameMovable implements Drawable, GameEntity, Overlappable {
-	public static final int RENDERING_SIZE = 60;
+	private static final int RENDERING_SIZE = 32;
 	
-	protected final SpriteManager spriteManager;
-	protected boolean movable = true;
+	private final SpriteManager spriteManager;
+	private boolean movable = true;
+	private int slant;
 
-	public Hero(Canvas defaultCanvas) {
-		spriteManager = new SpriteManagerDefaultImpl("images/hero.png", defaultCanvas, RENDERING_SIZE, 9, 13);
-		spriteManager.setTypes("", "", "", "static", "strike_up", "strike_left", "strike_down", "strike_right", "up", "left", "down", "right");
+	public Hero(Canvas canvas) {
+		this.spriteManager = new SpriteManagerDefaultImpl("images/hero.png", canvas, RENDERING_SIZE, 9, 13);
+		this.spriteManager.setTypes("", "", "", "static", "strike_up", "strike_left", "strike_down", "strike_right", "up", "left", "down", "right");
+		this.slant = 0;
+	}
+	
+	public int getSlant() {
+		return this.slant;
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		String spriteType = "";
 		Point tmp = getSpeedVector().getDirection();
-		movable = true;
+		this.movable = true;
 	
-		if (tmp.getX() == 1) {
+		if(tmp.getX() == 1) {
 			spriteType += "right";
-		} else if (tmp.getX() == -1) {
+			this.slant = 0;
+		} else if(tmp.getX() == -1) {
 			spriteType += "left";
-		} else if (tmp.getY() == 1) {
+			this.slant = 1;
+		} else if(tmp.getY() == 1) {
 			spriteType += "down";
-		} else if (tmp.getY() == -1) {
+			this.slant = 2;
+		} else if(tmp.getY() == -1) {
 			spriteType += "up";
+			this.slant = 3;
 		} else {
 			spriteType = "static";
-			spriteManager.reset();
-			movable = false;
+			this.slant = 0;
+			this.spriteManager.reset();
+			this.movable = false;
 		}
-		spriteManager.setType(spriteType);
-		spriteManager.draw(g, getPosition());
+		this.spriteManager.setType(spriteType);
+		this.spriteManager.draw(g, getPosition());
 	}
 
 	@Override
 	public void oneStepMoveAddedBehavior() {
-		if(movable)
-			spriteManager.increment();
+		if(this.movable)
+			this.spriteManager.increment();
 	}
 
+	@Override
 	public Rectangle getBoundingBox() {
 		return new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE);
 	}

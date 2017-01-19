@@ -34,9 +34,7 @@ public class PacmanOverlapRules extends OverlapRulesApplierDefaultImpl {
 	private int totalNbGums = 0;
 	private int nbEatenGums = 0;
 
-	public PacmanOverlapRules(Point pacPos, Point gPos,
-			ObservableValue<Integer> life, ObservableValue<Integer> score,
-			ObservableValue<Boolean> endOfGame) {
+	public PacmanOverlapRules(Point pacPos, Point gPos, ObservableValue<Integer> life, ObservableValue<Integer> score, ObservableValue<Boolean> endOfGame) {
 		pacManStartPos = (Point) pacPos.clone();
 		ghostStartPos = (Point) gPos.clone();
 		this.life = life;

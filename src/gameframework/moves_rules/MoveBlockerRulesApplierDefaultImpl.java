@@ -5,8 +5,7 @@ import gameframework.core.Movable;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
-public class MoveBlockerRulesApplierDefaultImpl implements
-		MoveBlockerRulesApplier {
+public class MoveBlockerRulesApplierDefaultImpl implements MoveBlockerRulesApplier {
 
 	public boolean moveValidationProcessing(Vector<MoveBlocker> moveBlockers,
 			Movable m) {
