@@ -1,4 +1,4 @@
-package fightforlife;
+package fightforlife.entities;
 
 import gameframework.core.Drawable;
 import gameframework.core.DrawableImage;
@@ -23,6 +23,7 @@ public class Tree implements Drawable, MoveBlocker, GameEntity {
 		this.y = yy;
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		g.drawImage(image.getImage(), this.x, this.y, RENDERING_SIZE, RENDERING_SIZE, null);
 	}
@@ -31,6 +32,7 @@ public class Tree implements Drawable, MoveBlocker, GameEntity {
 		return (new Point(this.x, this.y));
 	}
 
+	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(this.x, this.y, RENDERING_SIZE, RENDERING_SIZE));
 	}

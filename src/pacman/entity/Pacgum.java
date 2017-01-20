@@ -20,10 +20,12 @@ public class Pacgum implements Drawable, GameEntity, Overlappable {
 		position = pos;
 	}
 
+	@Override
 	public Point getPosition() {
 		return position;
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		g.drawImage(image.getImage(), (int) getPosition().getX(),
 				(int) getPosition().getY(), RENDERING_SIZE, RENDERING_SIZE,
@@ -31,6 +33,7 @@ public class Pacgum implements Drawable, GameEntity, Overlappable {
 
 	}
 
+	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle((int) position.getX(), (int) position.getY(),
 				RENDERING_SIZE, RENDERING_SIZE));

@@ -59,6 +59,7 @@ public class Ghost extends GameMovable implements Drawable, GameEntity,
 		active = aliveState;
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		String spriteType = "";
 		Point tmp = getSpeedVector().getDirection();
@@ -96,6 +97,7 @@ public class Ghost extends GameMovable implements Drawable, GameEntity,
 		}
 	}
 
+	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE));
 	}

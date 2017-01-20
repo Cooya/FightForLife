@@ -15,10 +15,12 @@ public class Jail implements GameEntity, Overlappable {
 		position = pos;
 	}
 
+	@Override
 	public Point getPosition() {
 		return position;
 	}
 
+	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle((int) position.getX(), (int) position.getY(),
 				SPRITE_SIZE, SPRITE_SIZE));

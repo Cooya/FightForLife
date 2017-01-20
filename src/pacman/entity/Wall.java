@@ -21,6 +21,7 @@ public class Wall implements Drawable, MoveBlocker, GameEntity {
 		y = yy;
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		g.drawImage(image.getImage(), x, y, RENDERING_SIZE, RENDERING_SIZE,
 				null);
@@ -30,6 +31,7 @@ public class Wall implements Drawable, MoveBlocker, GameEntity {
 		return (new Point(x, y));
 	}
 
+	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(x, y, RENDERING_SIZE, RENDERING_SIZE));
 	}

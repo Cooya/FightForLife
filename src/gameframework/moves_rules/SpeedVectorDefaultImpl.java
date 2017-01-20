@@ -25,18 +25,22 @@ public class SpeedVectorDefaultImpl implements SpeedVector {
 		this(direction, DEFAULT_SPEED);
 	}
 
+	@Override
 	public Point getDirection() {
 		return direction;
 	}
 
+	@Override
 	public int getSpeed() {
 		return speed;
 	}
 
+	@Override
 	public void setDirection(Point direction) {
 		this.direction = direction;
 	}
 
+	@Override
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}

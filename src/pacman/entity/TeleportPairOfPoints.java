@@ -21,10 +21,12 @@ public class TeleportPairOfPoints implements GameEntity, Overlappable {
 		return destination;
 	}
 
+	@Override
 	public Point getPosition() {
 		return position;
 	}
 
+	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle((int) position.getX(), (int) position.getY(),
 				RENDERING_SIZE, RENDERING_SIZE));

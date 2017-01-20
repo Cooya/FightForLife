@@ -11,7 +11,7 @@ public class Main {
 		ArrayList<GameLevel> levels = new ArrayList<>();
 
 		levels.add(new FightForLifeGameLevel(game));
-		
+
 		game.setLevels(levels);
 		game.start();
 	}

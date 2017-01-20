@@ -7,6 +7,12 @@ import java.awt.Shape;
 import java.util.Iterator;
 import java.util.Random;
 
+import fightforlife.entities.Hero;
+import fightforlife.entities.Tree;
+import fightforlife.entities.Troll;
+import fightforlife.rules.FightForLifeMoveBlockers;
+import fightforlife.rules.FightForLifeOverlapRules;
+import fightforlife.strategies.MoveStrategyKeyboardExtended;
 import gameframework.core.CanvasDefaultImpl;
 import gameframework.core.GameDefaultImpl;
 import gameframework.core.GameEntity;
@@ -19,7 +25,6 @@ import gameframework.core.Movable;
 import gameframework.moves_rules.IntersectTools;
 import gameframework.moves_rules.MoveBlockerChecker;
 import gameframework.moves_rules.MoveBlockerCheckerDefaultImpl;
-import gameframework.moves_rules.MoveBlockerRulesApplierDefaultImpl;
 import gameframework.moves_rules.MoveStrategyKeyboard;
 import gameframework.moves_rules.MoveStrategyRandom;
 import gameframework.moves_rules.ObjectWithBoundedBox;
@@ -48,16 +53,22 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 
 	@Override
 	protected void init() {
-		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
+		// instanciation du vérificateur des mouvements et mise en place de nos règles de mouvements
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
-		moveBlockerChecker.setMoveBlockerRules(new MoveBlockerRulesApplierDefaultImpl());
+		FightForLifeMoveBlockers moveBlockers = new FightForLifeMoveBlockers();
+		moveBlockerChecker.setMoveBlockerRules(moveBlockers);
 		
+		// instanciation du processeur des chevauchements et mise en place de nos règles de chevauchements
+		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 		OverlapRulesApplierDefaultImpl overlapRules = new FightForLifeOverlapRules(super.endOfGame);
 		overlapProcessor.setOverlapRules(overlapRules);
 
+		// instanciation de l'univers du jeu et ajout aux règles
 		this.universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
+		moveBlockers.setUniverse(this.universe);
 		overlapRules.setUniverse(this.universe);
 
+		// instanciation de la game board et association avec le canvas
 		this.gameBoard = new GameUniverseViewPortDefaultImpl(this.canvas, this.universe);
 		((GameUniverseViewPortDefaultImpl) this.gameBoard).setBackground(BACKGROUND_IMAGE);
 		((CanvasDefaultImpl) this.canvas).setDrawingGameBoard(this.gameBoard);
@@ -73,8 +84,8 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			}
 		}
 		
-		// instanciation et positionnment du héros
-		Hero hero = new Hero(this.canvas);
+		// instanciation et positionnement du héros
+		Hero hero = new Hero(this.canvas, moveBlockerChecker);
 		setPosition(hero);
 		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboardExtended(this.canvas, this.universe, hero);
@@ -84,7 +95,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		hero.setDriver(pacDriver);
 		this.universe.addGameEntity(hero);
 		
-		// instanciation et positionnment des trolls
+		// instanciation et positionnement des trolls
 		Troll troll;
 		GameMovableDriverDefaultImpl driver;
 		for(int i = 0; i < NUMBER_OF_TROLLS; ++i) {

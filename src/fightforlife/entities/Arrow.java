@@ -1,31 +1,30 @@
-package fightforlife;
+package fightforlife.entities;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import fightforlife.strategies.MoveStrategyStraightLineExtended;
 import gameframework.core.Drawable;
 import gameframework.core.DrawableImage;
 import gameframework.core.GameEntity;
 import gameframework.core.GameMovable;
 import gameframework.core.GameMovableDriverDefaultImpl;
 import gameframework.core.Overlappable;
-import gameframework.moves_rules.MoveStrategyStraightLine;
+import gameframework.moves_rules.SpeedVectorDefaultImpl;
 
 public class Arrow extends GameMovable implements Drawable, GameEntity, Overlappable {
 	private static final int RENDERING_SIZE = 32;
-	private static final int SPEED = 10;
+	private static final int SPEED = 20;
 	private static DrawableImage image = null;
 
 	public Arrow(Canvas canvas, Hero hero) {
 		if(image == null)
 			image = new DrawableImage("images/arrow.png", canvas);
 		Point pos = hero.getPosition();
-		this.setSpeedVector(hero.getSpeedVector());
+		this.setSpeedVector(new SpeedVectorDefaultImpl(hero.getSpeedVector().getDirection(), SPEED));
 		this.setPosition(pos);
-		GameMovableDriverDefaultImpl driver = new GameMovableDriverDefaultImpl();
-		
 		
 		Point direction;
 		switch(hero.getSlant()) {
@@ -35,7 +34,10 @@ public class Arrow extends GameMovable implements Drawable, GameEntity, Overlapp
 			case 3 : direction = new Point(0, -99999); break;
 			default: direction = new Point(0, 0); 
 		}
-		driver.setStrategy(new MoveStrategyStraightLine(pos, direction));
+		
+		GameMovableDriverDefaultImpl driver = new GameMovableDriverDefaultImpl();
+		driver.setmoveBlockerChecker(hero.getMoveBlocker());
+		driver.setStrategy(new MoveStrategyStraightLineExtended(pos, direction, SPEED));
 		setDriver(driver);
 	}
 	

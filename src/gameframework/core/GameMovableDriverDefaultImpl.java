@@ -24,6 +24,7 @@ public class GameMovableDriverDefaultImpl implements GameMovableDriver {
 		moveBlockerChecker = obst;
 	}
 
+	@Override
 	public SpeedVector getSpeedVector(Movable m) {
 		SpeedVector possibleSpeedVector;
 

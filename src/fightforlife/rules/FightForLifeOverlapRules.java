@@ -1,12 +1,15 @@
-package fightforlife;
+package fightforlife.rules;
 
+import fightforlife.entities.Arrow;
+import fightforlife.entities.Hero;
+import fightforlife.entities.Troll;
 import gameframework.core.GameUniverse;
 import gameframework.core.ObservableValue;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
 
 public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
 	private final ObservableValue<Boolean> endOfGame;
-	//private GameUniverse universe;
+	private GameUniverse universe;
 	
 	public FightForLifeOverlapRules(ObservableValue<Boolean> endOfGame) {
 		this.endOfGame = endOfGame;
@@ -14,10 +17,15 @@ public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
 
 	@Override
 	public void setUniverse(GameUniverse universe) {
-		//this.universe = universe;
+		this.universe = universe;
 	}
 	
 	public void overlapRule(Hero hero, Troll troll) {
-		endOfGame.setValue(true);
+		this.endOfGame.setValue(true);
+	}
+	
+	public void overlapRule(Arrow arrow, Troll troll) {
+		this.universe.removeGameEntity(arrow);
+		this.universe.removeGameEntity(troll);
 	}
 }

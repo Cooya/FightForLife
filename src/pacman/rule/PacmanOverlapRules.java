@@ -42,6 +42,7 @@ public class PacmanOverlapRules extends OverlapRulesApplierDefaultImpl {
 		this.endOfGame = endOfGame;
 	}
 
+	@Override
 	public void setUniverse(GameUniverse universe) {
 		this.universe = universe;
 	}

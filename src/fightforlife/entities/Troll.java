@@ -1,4 +1,4 @@
-package fightforlife;
+package fightforlife.entities;
 
 import gameframework.core.Drawable;
 import gameframework.core.GameEntity;
@@ -12,21 +12,15 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-public class Hero extends GameMovable implements Drawable, GameEntity, Overlappable {
+public class Troll extends GameMovable implements Drawable, GameEntity, Overlappable {
 	private static final int RENDERING_SIZE = 32;
 	
 	private final SpriteManager spriteManager;
 	private boolean movable = true;
-	private int slant;
 
-	public Hero(Canvas canvas) {
-		this.spriteManager = new SpriteManagerDefaultImpl("images/hero.png", canvas, RENDERING_SIZE, 9, 13);
-		this.spriteManager.setTypes("", "", "", "static", "strike_up", "strike_left", "strike_down", "strike_right", "up", "left", "down", "right");
-		this.slant = 0;
-	}
-	
-	public int getSlant() {
-		return this.slant;
+	public Troll(Canvas canvas) {
+		this.spriteManager = new SpriteManagerDefaultImpl("images/troll.png", canvas, RENDERING_SIZE, 9, 13);
+		this.spriteManager.setTypes("", "", "", "", "strike_up", "strike_left", "strike_down", "strike_right", "up", "left", "down", "right");
 	}
 
 	@Override
@@ -34,25 +28,17 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 		String spriteType = "";
 		Point tmp = getSpeedVector().getDirection();
 		this.movable = true;
-	
-		if(tmp.getX() == 1) {
-			spriteType += "right";
-			this.slant = 0;
-		} else if(tmp.getX() == -1) {
+
+		if(tmp.getX() == -1) {
 			spriteType += "left";
-			this.slant = 1;
 		} else if(tmp.getY() == 1) {
 			spriteType += "down";
-			this.slant = 2;
 		} else if(tmp.getY() == -1) {
 			spriteType += "up";
-			this.slant = 3;
 		} else {
-			spriteType = "static";
-			this.slant = 0;
-			this.spriteManager.reset();
-			this.movable = false;
+			spriteType += "right";
 		}
+
 		this.spriteManager.setType(spriteType);
 		this.spriteManager.draw(g, getPosition());
 	}
