@@ -6,6 +6,7 @@ import gameframework.core.GameMovable;
 import gameframework.core.Overlappable;
 import gameframework.core.SpriteManager;
 import gameframework.core.SpriteManagerDefaultImpl;
+import soldier.core.Unit;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -17,6 +18,16 @@ public class Troll extends GameMovable implements Drawable, GameEntity, Overlapp
 	
 	private final SpriteManager spriteManager;
 	private boolean movable = true;
+private Unit troll;
+	
+
+	public Unit getTrollUnit() {
+		return troll;
+	}
+
+	public void setTrollUnit(Unit troll) {
+		this.troll = troll;
+	}
 
 	public Troll(Canvas canvas) {
 		this.spriteManager = new SpriteManagerDefaultImpl("images/troll.png", canvas, RENDERING_SIZE, 9, 13);

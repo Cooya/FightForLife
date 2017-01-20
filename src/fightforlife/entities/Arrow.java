@@ -18,8 +18,18 @@ public class Arrow extends GameMovable implements Drawable, GameEntity, Overlapp
 	private static final int RENDERING_SIZE = 32;
 	private static final int SPEED = 20;
 	private static DrawableImage image = null;
+	private Hero hero;
+
+	public Hero getHero() {
+		return hero;
+	}
+
+	public void setHero(Hero hero) {
+		this.hero = hero;
+	}
 
 	public Arrow(Canvas canvas, Hero hero) {
+		this.hero=hero;
 		if(image == null)
 			image = new DrawableImage("images/arrow.png", canvas);
 		Point pos = hero.getPosition();

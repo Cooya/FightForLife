@@ -7,6 +7,7 @@ import gameframework.core.Overlappable;
 import gameframework.core.SpriteManager;
 import gameframework.core.SpriteManagerDefaultImpl;
 import gameframework.moves_rules.MoveBlockerChecker;
+import soldier.core.Unit;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -20,6 +21,15 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 	private boolean movable = true;
 	private int slant;
 	private MoveBlockerChecker moveBlocker;
+private Unit hero;
+	
+	public void setHeroUnit(Unit hero){
+		this.hero=hero;
+	}
+	public Unit getHeroUnit(){
+		return this.hero;
+	}
+
 
 	public Hero(Canvas canvas, MoveBlockerChecker moveBlocker) {
 		this.spriteManager = new SpriteManagerDefaultImpl("images/hero.png", canvas, RENDERING_SIZE, 9, 13);

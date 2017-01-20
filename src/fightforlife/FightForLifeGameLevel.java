@@ -31,6 +31,9 @@ import gameframework.moves_rules.ObjectWithBoundedBox;
 import gameframework.moves_rules.OverlapProcessor;
 import gameframework.moves_rules.OverlapProcessorDefaultImpl;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
+import soldier.units.UnitCenturion;
+import soldier.weapon.WeaponShield;
+import soldier.weapon.WeaponSword;
 
 public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	private static final int SPRITE_SIZE = 16; // taille d'un élément
@@ -94,6 +97,9 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		this.canvas.addKeyListener(keyStr);
 		hero.setDriver(pacDriver);
 		this.universe.addGameEntity(hero);
+		hero.setHeroUnit(new UnitCenturion("Billy"));
+		hero.getHeroUnit().addEquipment(new WeaponSword());
+
 		
 		// instanciation et positionnement des trolls
 		Troll troll;
@@ -106,6 +112,8 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			troll.setDriver(driver);
 			setPosition(troll);
 			this.universe.addGameEntity(troll);
+			troll.setTrollUnit(new UnitCenturion("troll"+i));
+			troll.getTrollUnit().addEquipment(new WeaponShield());
 		}
 	}
 	
