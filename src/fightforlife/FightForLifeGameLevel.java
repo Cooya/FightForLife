@@ -53,6 +53,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 
 	@Override
 	protected void init() {
+		
 		// instanciation du vérificateur des mouvements et mise en place de nos règles de mouvements
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
 		FightForLifeMoveBlockers moveBlockers = new FightForLifeMoveBlockers();
@@ -76,8 +77,9 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		// génération des positions des murs
 		generateWalls();
 		
+		// ajout des différentes entités à l'univers
 		for(int i = 0; i < this.map.length; ++i) {
-			for(int j = 0; j < this.map[i].length; ++j) {
+			for(int j = 0; j < this.map[0].length; ++j) {
 				switch(this.map[i][j]) {
 					case 1: universe.addGameEntity(new Tree(this.canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
 				}
@@ -111,10 +113,10 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	
 	private void generateWalls() {
 		for(int i = 0; i < this.map.length; i += this.map.length - 1) 
-			for(int j = 0; j < this.map.length; ++j)
+			for(int j = 0; j < this.map[0].length; ++j)
 				this.map[i][j] = 1;
 		
-		for(int i = 0; i < this.map.length; i += this.map.length - 1)
+		for(int i = 0; i < this.map[0].length; i += this.map[0].length - 1)
 			for(int j = 0; j < this.map.length; ++j)
 				this.map[j][i] = 1;
 		
@@ -123,17 +125,17 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		int randomX;
 		int randomY;
 		boolean direction;
-		
 		for(int i = 0; i < nbWalls; ++i) {
-			randomX = random.nextInt(this.map.length);
+			randomX = random.nextInt(this.map[0].length);
 			randomY = random.nextInt(this.map.length);
+			System.out.println(randomX + " " + randomY);
 			direction = random.nextBoolean();
 			wallSize = random.nextInt(20);
 			for(int j = 0; j < wallSize; ++j) {
-				if(direction && randomX + j < this.map.length)
-					this.map[randomX + j][randomY] = 1;
+				if(direction && randomX + j < this.map[0].length)
+					this.map[randomY][randomX + j] = 1;
 				else if(!direction && randomY + j < this.map.length)
-					this.map[randomX][randomY + j] = 1;
+					this.map[randomY + j][randomX] = 1;
 				else
 					break;
 			}
@@ -143,7 +145,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	private void setPosition(GameMovable movable) {
 		Point randomPoint = new Point();
 		do {
-			randomPoint.x = random.nextInt(this.map.length) * 16;
+			randomPoint.x = random.nextInt(this.map[0].length) * 16;
 			randomPoint.y = random.nextInt(this.map.length) * 16;
 			movable.setPosition(randomPoint);
 		}

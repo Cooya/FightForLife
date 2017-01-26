@@ -18,7 +18,7 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 	
 	private final SpriteManager spriteManager;
 	private boolean movable = true;
-	private int slant;
+	private int slant; // 0, 1, 2 ou 3
 	private MoveBlockerChecker moveBlocker;
 
 	public Hero(Canvas canvas, MoveBlockerChecker moveBlocker) {
@@ -55,8 +55,12 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 			spriteType += "up";
 			this.slant = 3;
 		} else {
-			spriteType = "static";
-			this.slant = 0;
+			switch(this.slant) {
+				case 0 : spriteType += "right"; break;
+				case 1 : spriteType += "left"; break;
+				case 2 : spriteType += "down"; break;
+				case 3 : spriteType += "up"; break;
+			}
 			this.spriteManager.reset();
 			this.movable = false;
 		}

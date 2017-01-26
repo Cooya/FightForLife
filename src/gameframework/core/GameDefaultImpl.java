@@ -24,8 +24,8 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("unchecked")
 public class GameDefaultImpl implements Game, Observer {
-	protected static final int NB_ROWS = 64;
-	protected static final int NB_COLUMNS = 64;
+	protected static final int NB_ROWS = 48;
+	protected static final int NB_COLUMNS = 96;
 	protected static final int SPRITE_SIZE = 16;
 	public static final int MAX_NUMBER_OF_PLAYER = 4;
 	public static final int NUMBER_OF_LIVES = 1;
@@ -173,7 +173,7 @@ public class GameDefaultImpl implements Game, Observer {
 	}
 	
 	public static int getNbColumns() {
-		return NB_ROWS;
+		return NB_COLUMNS;
 	}
 	
 	public static int getSpriteSize() {
