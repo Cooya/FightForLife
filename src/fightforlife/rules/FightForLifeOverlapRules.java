@@ -25,7 +25,10 @@ public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 	
 	public void overlapRule(Arrow arrow, Troll troll) {
+		troll.getTrollUnit().parry(arrow.getHero().getHeroUnit().strike());
+		if(troll.getTrollUnit().getHealthPoints()<=0)
+			this.universe.removeGameEntity(troll);
 		this.universe.removeGameEntity(arrow);
-		this.universe.removeGameEntity(troll);
+		System.out.println("troll tiré "+troll.getTrollUnit().getName() +" "+ troll.getTrollUnit().getHealthPoints());
 	}
 }

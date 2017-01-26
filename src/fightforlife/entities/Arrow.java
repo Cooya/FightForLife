@@ -22,6 +22,7 @@ public class Arrow extends GameMovable implements Drawable, GameEntity, Overlapp
 	private static final int SPEED = 50;
 	private static DrawableImage image = null;
 	private int orientation;
+	private Hero hero;
 
 	public Arrow(Canvas canvas, Hero hero) {
 		if(image == null)
@@ -29,9 +30,10 @@ public class Arrow extends GameMovable implements Drawable, GameEntity, Overlapp
 		Point pos = hero.getPosition();
 		this.setSpeedVector(new SpeedVectorDefaultImpl(hero.getSpeedVector().getDirection(), SPEED));
 		this.setPosition(pos);
+		this.hero = hero;
 
 		Point direction;
-		switch(hero.getSlant()) {
+		switch(hero.getOrientation()) {
 			case 0 : direction = new Point(99999, 0); this.orientation = 0; break;
 			case 1 : direction = new Point(-99999, 0); this.orientation = 1; break;
 			case 2 : direction = new Point(0, 99999); this.orientation = 2; break;
@@ -71,5 +73,9 @@ public class Arrow extends GameMovable implements Drawable, GameEntity, Overlapp
 	@Override
 	public Rectangle getBoundingBox() {
 		return new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE);
+	}
+	
+	public Hero getHero() {
+		return hero;
 	}
 }

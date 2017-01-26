@@ -7,6 +7,7 @@ import gameframework.core.Overlappable;
 import gameframework.core.SpriteManager;
 import gameframework.core.SpriteManagerDefaultImpl;
 import gameframework.moves_rules.MoveBlockerChecker;
+import soldier.core.Unit;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
@@ -18,22 +19,15 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 	
 	private final SpriteManager spriteManager;
 	private boolean movable = true;
-	private int slant; // 0, 1, 2 ou 3
+	private int orientation; // 0, 1, 2 ou 3
 	private MoveBlockerChecker moveBlocker;
-
+	private Unit hero;
+	
 	public Hero(Canvas canvas, MoveBlockerChecker moveBlocker) {
 		this.spriteManager = new SpriteManagerDefaultImpl("images/hero.png", canvas, RENDERING_SIZE, 9, 13);
 		this.spriteManager.setTypes("", "", "", "static", "strike_up", "strike_left", "strike_down", "strike_right", "up", "left", "down", "right");
-		this.slant = 0;
+		this.orientation = 0;
 		this.moveBlocker = moveBlocker;
-	}
-	
-	public int getSlant() {
-		return this.slant;
-	}
-	
-	public MoveBlockerChecker getMoveBlocker() {
-		return this.moveBlocker;
 	}
 
 	@Override
@@ -44,18 +38,18 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 	
 		if(tmp.getX() == 1) {
 			spriteType += "right";
-			this.slant = 0;
+			this.orientation = 0;
 		} else if(tmp.getX() == -1) {
 			spriteType += "left";
-			this.slant = 1;
+			this.orientation = 1;
 		} else if(tmp.getY() == 1) {
 			spriteType += "down";
-			this.slant = 2;
+			this.orientation = 2;
 		} else if(tmp.getY() == -1) {
 			spriteType += "up";
-			this.slant = 3;
+			this.orientation = 3;
 		} else {
-			switch(this.slant) {
+			switch(this.orientation) {
 				case 0 : spriteType += "right"; break;
 				case 1 : spriteType += "left"; break;
 				case 2 : spriteType += "down"; break;
@@ -77,5 +71,21 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 	@Override
 	public Rectangle getBoundingBox() {
 		return new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE);
+	}
+	
+	public int getOrientation() {
+		return this.orientation;
+	}
+	
+	public MoveBlockerChecker getMoveBlocker() {
+		return this.moveBlocker;
+	}
+	
+	public void setHeroUnit(Unit hero) {
+		this.hero = hero;
+	}
+	
+	public Unit getHeroUnit() {
+		return this.hero;
 	}
 }
