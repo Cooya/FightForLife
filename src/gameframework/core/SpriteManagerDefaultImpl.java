@@ -25,14 +25,7 @@ public class SpriteManagerDefaultImpl implements SpriteManager {
 		this.renderingSize = renderingSize;
 		image = new DrawableImage(filename, canvas);
 		this.maxSpriteNumber = maxSpriteNumber;
-		this.spriteSize = this.image.getImage().getWidth(null) / maxSpriteNumber;
-	}
-	
-	public SpriteManagerDefaultImpl(String filename, Canvas canvas, int renderingSize, int spriteNumber, int maxSpriteNumber) {
-		this.renderingSize = renderingSize;
-		image = new DrawableImage(filename, canvas);
-		this.maxSpriteNumber = spriteNumber;
-		this.spriteSize = this.image.getImage().getWidth(null) / maxSpriteNumber;
+		this.spriteSize = image.getImage().getWidth(null) / maxSpriteNumber;
 	}
 
 	@Override
@@ -58,15 +51,13 @@ public class SpriteManagerDefaultImpl implements SpriteManager {
 		int sy1 = currentRow * spriteSize;
 		int sx2 = sx1 + spriteSize;
 		int sy2 = sy1 + spriteSize;
-		g.drawImage(image.getImage(), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
-				null);
+		g.drawImage(image.getImage(), dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
 	}
 
 	@Override
 	public void setType(String type) {
 		if (!types.containsKey(type)) {
-			throw new IllegalArgumentException(type
-					+ " is not a valid type for this sprite manager.");
+			throw new IllegalArgumentException(type + " is not a valid type for this sprite manager.");
 		}
 		this.currentRow = types.get(type);
 	}

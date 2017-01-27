@@ -11,7 +11,6 @@ public class MoveStrategyStraightLine implements MoveStrategy {
 		this.currentPosition = pos;
 	}
 
-	@Override
 	public SpeedVector getSpeedVector() {
 		double dist = currentPosition.distance(goal);
 		int xDirection = (int) Math.rint((goal.getX() - currentPosition.getX())

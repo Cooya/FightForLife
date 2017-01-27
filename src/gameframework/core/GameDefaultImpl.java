@@ -24,8 +24,8 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("unchecked")
 public class GameDefaultImpl implements Game, Observer {
-	protected static final int NB_ROWS = 48;
-	protected static final int NB_COLUMNS = 96;
+	protected static final int NB_ROWS = 48; // modifié
+	protected static final int NB_COLUMNS = 64; // modifié
 	protected static final int SPRITE_SIZE = 16;
 	public static final int MAX_NUMBER_OF_PLAYER = 4;
 	public static final int NUMBER_OF_LIVES = 1;
@@ -63,7 +63,6 @@ public class GameDefaultImpl implements Game, Observer {
 		createGUI();
 	}
 
-	@Override
 	public void createGUI() {
 		f = new Frame("Default Game");
 		f.dispose();
@@ -101,37 +100,31 @@ public class GameDefaultImpl implements Game, Observer {
 		f.setMenuBar(menuBar);
 
 		start.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				start();
 			}
 		});
 		save.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				save();
 			}
 		});
 		restore.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				restore();
 			}
 		});
 		quit.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
 		pause.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				pause();
 			}
 		});
 		resume.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				resume();
 			}
@@ -163,24 +156,10 @@ public class GameDefaultImpl implements Game, Observer {
 		return c;
 	}
 
-	@Override
 	public Canvas getCanvas() {
 		return defaultCanvas;
 	}
-	
-	public static int getNbRows() {
-		return NB_ROWS;
-	}
-	
-	public static int getNbColumns() {
-		return NB_COLUMNS;
-	}
-	
-	public static int getSpriteSize() {
-		return SPRITE_SIZE;
-	}
 
-	@Override
 	public void start() {
 		for (int i = 0; i < MAX_NUMBER_OF_PLAYER; ++i) {
 			score[i].addObserver(this);
@@ -208,39 +187,32 @@ public class GameDefaultImpl implements Game, Observer {
 
 	}
 
-	@Override
 	public void restore() {
 		System.out.println("restore(): Unimplemented operation");
 	}
 
-	@Override
 	public void save() {
 		System.out.println("save(): Unimplemented operation");
 	}
 
-	@Override
 	public void pause() {
 		System.out.println("pause(): Unimplemented operation");
 		// currentPlayedLevel.suspend();
 	}
 
-	@Override
 	public void resume() {
 		System.out.println("resume(): Unimplemented operation");
 		// currentPlayedLevel.resume();
 	}
 
-	@Override
 	public ObservableValue<Integer>[] score() {
 		return score;
 	}
 
-	@Override
 	public ObservableValue<Integer>[] life() {
 		return life;
 	}
 
-	@Override
 	public ObservableValue<Boolean> endOfGame() {
 		return endOfGame;
 	}
@@ -249,7 +221,6 @@ public class GameDefaultImpl implements Game, Observer {
 		gameLevels = levels;
 	}
 
-	@Override
 	public void update(Observable o, Object arg) {
 		if (o == endOfGame) {
 			if (endOfGame.getValue()) {

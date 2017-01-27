@@ -5,13 +5,14 @@ import gameframework.core.GameEntity;
 import gameframework.core.GameMovable;
 import gameframework.core.Overlappable;
 import gameframework.core.SpriteManager;
-import gameframework.core.SpriteManagerDefaultImpl;
 import soldier.core.Unit;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+
+import fightforlife.CustomSpriteManager;
 
 public class Troll extends GameMovable implements Drawable, GameEntity, Overlappable {
 	private static final int RENDERING_SIZE = 32;
@@ -21,7 +22,7 @@ public class Troll extends GameMovable implements Drawable, GameEntity, Overlapp
 	private Unit troll;
 
 	public Troll(Canvas canvas) {
-		this.spriteManager = new SpriteManagerDefaultImpl("images/troll.png", canvas, RENDERING_SIZE, 9, 13);
+		this.spriteManager = new CustomSpriteManager("images/troll.png", canvas, RENDERING_SIZE, 9, 13);
 		this.spriteManager.setTypes("", "", "", "", "strike_up", "strike_left", "strike_down", "strike_right", "up", "left", "down", "right");
 	}
 

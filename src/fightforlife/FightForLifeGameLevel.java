@@ -36,6 +36,8 @@ import soldier.weapon.WeaponShield;
 import soldier.weapon.WeaponSword;
 
 public class FightForLifeGameLevel extends GameLevelDefaultImpl {
+	private static final int NB_ROWS = 48;
+	private static final int NB_COLUMNS = 64;
 	private static final int SPRITE_SIZE = 16; // taille d'un élément
 	private static final int NUMBER_OF_TROLLS = 10;
 	private static final String BACKGROUND_IMAGE = "images/floor.jpg";
@@ -48,7 +50,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		super(game);
 		this.canvas = game.getCanvas();
 		
-		this.map = new int[GameDefaultImpl.getNbRows()][GameDefaultImpl.getNbColumns()];
+		this.map = new int[NB_ROWS][NB_COLUMNS];
 		for(int i = 0; i < map.length; ++i)
 			for(int j = 0; j < map[i].length; ++j)
 				this.map[i][j] = 0;
@@ -136,7 +138,6 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		for(int i = 0; i < nbWalls; ++i) {
 			randomX = random.nextInt(this.map[0].length);
 			randomY = random.nextInt(this.map.length);
-			System.out.println(randomX + " " + randomY);
 			direction = random.nextBoolean();
 			wallSize = random.nextInt(20);
 			for(int j = 0; j < wallSize; ++j) {

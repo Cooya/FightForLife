@@ -17,22 +17,18 @@ public class MoveBlockerCheckerDefaultImpl implements MoveBlockerChecker {
 		this.moveBlockerRuleApplier = new MoveBlockerRulesApplierDefaultImpl();
 	}
 
-	@Override
 	public void addMoveBlocker(MoveBlocker p) {
 		moveBlockers.add(p);
 	}
 
-	@Override
 	public void removeMoveBlocker(MoveBlocker p) {
 		moveBlockers.remove(p);
 	}
 
-	@Override
 	public void setMoveBlockerRules(MoveBlockerRulesApplier moveBlockerRules) {
 		this.moveBlockerRuleApplier = moveBlockerRules;
 	}
 
-	@Override
 	public boolean moveValidation(Movable m, SpeedVector mov) {
 		Shape intersectShape = IntersectTools.getIntersectShape(m, mov);
 		Vector<MoveBlocker> moveBlockersInIntersection = new Vector<MoveBlocker>();
@@ -51,7 +47,8 @@ public class MoveBlockerCheckerDefaultImpl implements MoveBlockerChecker {
 		}
 
 		if (!moveBlockersInIntersection.isEmpty()) {
-			return moveBlockerRuleApplier.moveValidationProcessing(moveBlockersInIntersection, m);
+			return moveBlockerRuleApplier.moveValidationProcessing(
+					moveBlockersInIntersection, m);
 		}
 
 		return true;

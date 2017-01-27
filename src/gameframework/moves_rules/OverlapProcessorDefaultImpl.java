@@ -27,7 +27,6 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 		overlappablesMovable = new ConcurrentLinkedQueue<Overlappable>();
 	}
 
-	@Override
 	public void addOverlappable(Overlappable p) {
 		if (p instanceof Movable) {
 			overlappablesMovable.add(p);
@@ -36,7 +35,6 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 		}
 	}
 
-	@Override
 	public void removeOverlappable(Overlappable p) {
 		if (p instanceof Movable) {
 			overlappablesMovable.remove(p);
@@ -45,7 +43,6 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 		}
 	}
 
-	@Override
 	public void setOverlapRules(OverlapRulesApplier overlapRules) {
 		this.overlapRules = overlapRules;
 	}
@@ -53,7 +50,6 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 	// for optimization purpose : prevents to compute two times the overlaps
 	private List<Overlappable> movablesTmp;
 
-	@Override
 	public void processOverlapsAll() {
 		Vector<Overlap> overlaps = new Vector<Overlap>();
 
@@ -65,8 +61,7 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 		overlapRules.applyOverlapRules(overlaps);
 	}
 
-	private void computeOneOverlap(Overlappable overlappable,
-			Vector<Overlap> overlaps) {
+	private void computeOneOverlap(Overlappable overlappable, Vector<Overlap> overlaps) {
 		Area overlappableArea, targetArea;
 		Rectangle boundingBoxTarget, boundingBoxOverlappable;
 
@@ -103,7 +98,7 @@ public class OverlapProcessorDefaultImpl implements OverlapProcessor {
 								-((Movable) targetOverlappable)
 										.getSpeedVector().getSpeed()));
 				boundingBoxTarget = targetShape.getBounds();
-
+				
 				if (boundingBoxOverlappable.intersects(boundingBoxTarget)) {
 					targetArea = new Area(targetShape);
 					targetArea.intersect(overlappableArea);

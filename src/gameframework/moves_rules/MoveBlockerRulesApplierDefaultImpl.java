@@ -5,9 +5,9 @@ import gameframework.core.Movable;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
-public class MoveBlockerRulesApplierDefaultImpl implements MoveBlockerRulesApplier {
+public class MoveBlockerRulesApplierDefaultImpl implements
+		MoveBlockerRulesApplier {
 
-	@Override
 	public boolean moveValidationProcessing(Vector<MoveBlocker> moveBlockers,
 			Movable m) {
 		for (MoveBlocker moveBlocker : moveBlockers) {
@@ -25,9 +25,11 @@ public class MoveBlockerRulesApplierDefaultImpl implements MoveBlockerRulesAppli
 		return true;
 	}
 
-	private void moveBlockerRuleApply(Movable e1, MoveBlocker e2) throws Exception {
+	private void moveBlockerRuleApply(Movable e1, MoveBlocker e2)
+			throws Exception {
 		Method m = null;
-		m = (getClass()).getMethod("moveBlockerRule", e1.getClass(), e2.getClass());
+		m = (getClass()).getMethod("moveBlockerRule", e1.getClass(),
+				e2.getClass());
 		m.invoke(this, e1, e2);
 	}
 }

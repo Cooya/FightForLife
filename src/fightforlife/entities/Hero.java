@@ -5,7 +5,6 @@ import gameframework.core.GameEntity;
 import gameframework.core.GameMovable;
 import gameframework.core.Overlappable;
 import gameframework.core.SpriteManager;
-import gameframework.core.SpriteManagerDefaultImpl;
 import gameframework.moves_rules.MoveBlockerChecker;
 import soldier.core.Unit;
 
@@ -13,6 +12,8 @@ import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+
+import fightforlife.CustomSpriteManager;
 
 public class Hero extends GameMovable implements Drawable, GameEntity, Overlappable {
 	private static final int RENDERING_SIZE = 32;
@@ -24,7 +25,7 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 	private Unit hero;
 	
 	public Hero(Canvas canvas, MoveBlockerChecker moveBlocker) {
-		this.spriteManager = new SpriteManagerDefaultImpl("images/hero.png", canvas, RENDERING_SIZE, 9, 13);
+		this.spriteManager = new CustomSpriteManager("images/hero.png", canvas, RENDERING_SIZE, 9, 13);
 		this.spriteManager.setTypes("", "", "", "static", "strike_up", "strike_left", "strike_down", "strike_right", "up", "left", "down", "right");
 		this.orientation = 0;
 		this.moveBlocker = moveBlocker;
