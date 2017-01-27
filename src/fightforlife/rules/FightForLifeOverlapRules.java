@@ -35,21 +35,17 @@ public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 	
 	public void overlapRule(Hero hero, Troll troll) {
-		if(this.life.getValue() == 0)
-			this.endOfGame.setValue(true);
-		else{ 
-			this.life.setValue(this.life.getValue() - 1);
-			this.universe.removeGameEntity(troll);
-		}
+		this.life.setValue(this.life.getValue() - 1);
+		if(this.life.getValue() < 0)
+			this.life.setValue(0);
+		this.universe.removeGameEntity(troll);
 	}
 	
 	public void overlapRule(Hero hero, Dragon dragon) {
-		if(this.life.getValue() == 0)
-			this.endOfGame.setValue(true);
-		else { 
-			this.life.setValue(this.life.getValue() - 2);
-			this.universe.removeGameEntity(dragon);
-		}
+		this.life.setValue(this.life.getValue() - 2);
+		if(this.life.getValue() < 0)
+			this.life.setValue(0);
+		this.universe.removeGameEntity(dragon);
 	}
 	
 	public  void overlapRule(Arrow arrow, Dragon dragon) {
