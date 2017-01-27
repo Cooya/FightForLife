@@ -9,8 +9,10 @@ import java.util.Random;
 
 import fightforlife.entities.Arrow;
 import fightforlife.entities.Hero;
+import fightforlife.entities.PowerPlus;
 import fightforlife.entities.Tree;
 import fightforlife.entities.Troll;
+import fightforlife.entities.Troll2;
 import fightforlife.rules.FightForLifeMoveBlockers;
 import fightforlife.rules.FightForLifeOverlapRules;
 import fightforlife.strategies.MoveStrategyDynamicTarget;
@@ -34,7 +36,10 @@ import gameframework.moves_rules.OverlapProcessorDefaultImpl;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
 import soldier.core.Unit;
 import soldier.core.UnitGroup;
+import soldier.units.UnitBikerMan;
 import soldier.units.UnitCenturion;
+import soldier.units.UnitHorseMan;
+import soldier.util.DeadUnitCounterObserver;
 import soldier.weapon.WeaponShield;
 import soldier.weapon.WeaponSword;
 
@@ -74,7 +79,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		
 		// instanciation du processeur des chevauchements et mise en place de nos règles de chevauchements
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
-		OverlapRulesApplierDefaultImpl overlapRules = new FightForLifeOverlapRules(super.endOfGame);
+		OverlapRulesApplierDefaultImpl overlapRules = new FightForLifeOverlapRules(super.endOfGame,life[0],score[0]);
 		overlapProcessor.setOverlapRules(overlapRules);
 
 		// instanciation de l'univers du jeu et ajout aux règles
@@ -95,6 +100,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			for(int j = 0; j < this.map[0].length; ++j) {
 				switch(this.map[i][j]) {
 					case 1: universe.addGameEntity(new Tree(this.canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+					
 				}
 			}
 		}
@@ -119,6 +125,8 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	private Hero newHero(MoveBlockerChecker moveBlockerChecker) {
 		Hero hero = new Hero(this.canvas, moveBlockerChecker);
 		setHeroPosition(hero);
+		this.universe.addGameEntity(new PowerPlus(canvas, new Point(50,50)));
+		
 		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboardExtended(this.canvas, this.universe, hero);
 		pacDriver.setStrategy(keyStr);
@@ -126,7 +134,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		this.canvas.addKeyListener(keyStr);
 		hero.setDriver(pacDriver);
 		this.universe.addGameEntity(hero);
-		hero.setHeroUnit(new UnitCenturion("Billy"));
+		hero.setHeroUnit(new UnitHorseMan("Billy"));
 		hero.getHeroUnit().addEquipment(new WeaponSword());
 		return hero;
 	}
@@ -135,7 +143,6 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		Troll troll;
 		GameMovableDriverDefaultImpl driver = null;
 		Unit unitTroll;
-		
 		driver = new GameMovableDriverDefaultImpl();
 		troll = new Troll(this.canvas);
 		setTrollPosition(troll, hero);
