@@ -8,8 +8,10 @@ import java.util.Iterator;
 import java.util.Random;
 
 import fightforlife.entities.Hero;
+import fightforlife.entities.PowerPlus;
 import fightforlife.entities.Tree;
 import fightforlife.entities.Troll;
+import fightforlife.entities.Troll2;
 import fightforlife.rules.FightForLifeMoveBlockers;
 import fightforlife.rules.FightForLifeOverlapRules;
 import fightforlife.strategies.MoveStrategyKeyboardExtended;
@@ -33,7 +35,10 @@ import gameframework.moves_rules.OverlapProcessorDefaultImpl;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
 import soldier.core.Unit;
 import soldier.core.UnitGroup;
+import soldier.units.UnitBikerMan;
 import soldier.units.UnitCenturion;
+import soldier.units.UnitHorseMan;
+import soldier.util.DeadUnitCounterObserver;
 import soldier.weapon.WeaponShield;
 import soldier.weapon.WeaponSword;
 
@@ -45,6 +50,9 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	private static final String BACKGROUND_IMAGE = "images/floor.jpg";
 	private static final Random random = new Random();		
 	private static UnitGroup trolls = new UnitGroup("trolls");
+	public static DeadUnitCounterObserver dcount=new DeadUnitCounterObserver();
+	
+
 	private Canvas canvas;
 	private int[][] map;
 
@@ -68,7 +76,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		
 		// instanciation du processeur des chevauchements et mise en place de nos règles de chevauchements
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
-		OverlapRulesApplierDefaultImpl overlapRules = new FightForLifeOverlapRules(super.endOfGame);
+		OverlapRulesApplierDefaultImpl overlapRules = new FightForLifeOverlapRules(super.endOfGame,life[0],score[0]);
 		overlapProcessor.setOverlapRules(overlapRules);
 
 		// instanciation de l'univers du jeu et ajout aux règles
@@ -89,6 +97,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			for(int j = 0; j < this.map[0].length; ++j) {
 				switch(this.map[i][j]) {
 					case 1: universe.addGameEntity(new Tree(this.canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
+					
 				}
 			}
 		}
@@ -96,6 +105,8 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		// instanciation et positionnement du héros
 		Hero hero = new Hero(this.canvas, moveBlockerChecker);
 		setPosition(hero);
+		this.universe.addGameEntity(new PowerPlus(canvas, new Point(50,50)));
+		
 		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboardExtended(this.canvas, this.universe, hero);
 		pacDriver.setStrategy(keyStr);
@@ -103,8 +114,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		this.canvas.addKeyListener(keyStr);
 		hero.setDriver(pacDriver);
 		this.universe.addGameEntity(hero);
-		hero.setHeroUnit(new UnitCenturion("Billy"));
-		hero.getHeroUnit().addEquipment(new WeaponSword());
+		hero.setHeroUnit(new UnitHorseMan("Billy"));
 
 		
 		// instanciation et positionnement des trolls
@@ -124,7 +134,21 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			troll.setTrollUnit(unitTroll);
 			trolls.addUnit(unitTroll);
 		}
-		trolls.addEquipment(new WeaponShield()); // ajout d'une épée à tous les trolls
+		//trolls.addEquipment(new WeaponShield()); // ajout d'une épée à tous les trolls
+	/*	AddSimpleUnitObserver obs=new AddSimpleUnitObserver(dcount);
+		obs.visit(trolls);*/
+		
+		for(int i = 0; i < 3; ++i) {
+			driver = new GameMovableDriverDefaultImpl();
+			driver.setStrategy(new MoveStrategyRandom());
+			driver.setmoveBlockerChecker(moveBlockerChecker);
+			 Troll2 troll2 = new Troll2(this.canvas);
+			troll2.setDriver(driver);
+			setPosition(troll2);
+			this.universe.addGameEntity(troll2);
+			unitTroll = new UnitBikerMan("dragon" + i);
+			troll2.setTrollUnit(unitTroll);
+		}
 	}
 	
 	private void generateWalls() {
@@ -157,7 +181,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		}
 	}
 	
-	private void setPosition(GameMovable movable) {
+	public  void setPosition(GameMovable movable) {
 		Point randomPoint = new Point();
 		do {
 			randomPoint.x = random.nextInt(this.map[0].length) * 16;

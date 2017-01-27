@@ -1,6 +1,6 @@
 /**
  * D. Auber & P. Narbel
- * Solution TD Architecture Logicielle 2016 Université Bordeaux.
+ * Solution TD Architecture Logicielle 2016 Universitï¿½ Bordeaux.
  */
 package soldier.units;
 
@@ -13,7 +13,7 @@ import soldier.core.Weapon;
 public class UnitHorseMan extends UnitRider {
 
 	public UnitHorseMan(String soldierName) {
-		super(soldierName, new BehaviorSoldierStd(20, 120));
+		super(soldierName, new BehaviorSoldierStd(3, 1));
 	}
 
 	@Override

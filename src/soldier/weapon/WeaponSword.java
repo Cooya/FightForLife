@@ -1,6 +1,6 @@
 /**
  * D. Auber & P. Narbel
- * Solution TD Architecture Logicielle 2016 Université Bordeaux.
+ * Solution TD Architecture Logicielle 2016 Universitï¿½ Bordeaux.
  */
 package soldier.weapon;
 
@@ -22,6 +22,6 @@ public class WeaponSword extends WeaponAttack {
 
 	@Override
 	public BehaviorSoldier createExtension(BehaviorSoldier s) {
-		return new BehaviorExtConst(this, s, 10, 10);
+		return new BehaviorExtConst(this, s, 1, 1);
 	}
 }
