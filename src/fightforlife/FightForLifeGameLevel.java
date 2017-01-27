@@ -43,7 +43,7 @@ import soldier.weapon.WeaponShield;
 public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	private static final int NB_ROWS = 48;
 	private static final int NB_COLUMNS = 64;
-	private static final int SPRITE_SIZE = 16; // taille d'un Ã©lÃ©ment
+	private static final int SPRITE_SIZE = 16; // taille d'un élément
 	private static final int NUMBER_OF_TROLLS = 10;
 	private static final int NUMBER_OF_DRAGONS = 3;
 	private static final int TROLLS_SPEED = 4;
@@ -53,7 +53,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	private static Unit trolls = new UnitGroup("trolls");
 	private Canvas canvas;
 	private int[][] map;
-	private int trollsCounter;
+	private int monsterCounter;
 
 	public FightForLifeGameLevel(GameDefaultImpl game) {
 		super(game);
@@ -64,23 +64,23 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			for(int j = 0; j < map[i].length; ++j)
 				this.map[i][j] = 0;
 		
-		this.trollsCounter = 0;
+		this.monsterCounter = 0;
 	}
 
 	@Override
 	protected void init() {
 		
-		// instanciation du vÃ©rificateur des mouvements et mise en place de nos rÃ¨gles de mouvements
+		// instanciation du vérificateur des mouvements et mise en place de nos règles de mouvements
 		MoveBlockerChecker moveBlockerChecker = new MoveBlockerCheckerDefaultImpl();
 		FightForLifeMoveBlockers moveBlockers = new FightForLifeMoveBlockers();
 		moveBlockerChecker.setMoveBlockerRules(moveBlockers);
 		
-		// instanciation du processeur des chevauchements et mise en place de nos rÃ¨gles de chevauchements
+		// instanciation du processeur des chevauchements et mise en place de nos règles de chevauchements
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
 		OverlapRulesApplierDefaultImpl overlapRules = new FightForLifeOverlapRules(super.endOfGame,life[0],score[0]);
 		overlapProcessor.setOverlapRules(overlapRules);
 
-		// instanciation de l'univers du jeu et ajout aux rÃ¨gles
+		// instanciation de l'univers du jeu et ajout aux règles
 		this.universe = new GameUniverseDefaultImpl(moveBlockerChecker, overlapProcessor);
 		moveBlockers.setUniverse(this.universe);
 		overlapRules.setUniverse(this.universe);
@@ -90,10 +90,10 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		((GameUniverseViewPortDefaultImpl) this.gameBoard).setBackground(BACKGROUND_IMAGE);
 		((CanvasDefaultImpl) this.canvas).setDrawingGameBoard(this.gameBoard);
 		
-		// gÃ©nÃ©ration des positions des murs
+		// génération des positions des murs
 		generateWalls();
 		
-		// ajout des diffÃ©rentes entitÃ©s statiques Ã  l'univers
+		// ajout des différentes entitées statiques à l'univers
 		for(int i = 0; i < this.map.length; ++i) {
 			for(int j = 0; j < this.map[0].length; ++j) {
 				switch(this.map[i][j]) {
@@ -103,24 +103,24 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			}
 		}
 		
-		// instanciation et positionnement du hÃ©ros
+		// instanciation et positionnement du héros
 		Hero hero = newHero(moveBlockerChecker);
 		
 		// instanciation et positionnement des trolls
 		for(int i = 0; i < NUMBER_OF_TROLLS; ++i)
 			newTroll(moveBlockerChecker, hero);
 		
-		// ajout d'une Ã©pÃ©e Ã  tous les trolls
+		// ajout d'un boucler à tous les trolls
 		trolls.addEquipment(new WeaponShield());
 		
 		// instanciation et postionnement des dragons
 		for(int i = 0; i < NUMBER_OF_DRAGONS; ++i)
 			newDragon(moveBlockerChecker, hero);
 		
-		// chargement de la classe Arrow pour Ã©viter un petit lag au premier tir du joueur
+		// chargement de la classe Arrow pour éviter un petit lag au premier tir du joueur
 		new Arrow(canvas, hero);
 		
-		// lancement de la boucle de gÃ©nÃ©ration de trolls
+		// lancement de la boucle de génération de trolls
 		runTrollsGenerationLoop(moveBlockerChecker, hero);
 	}
 	
@@ -128,29 +128,28 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		Hero hero = new Hero(this.canvas, moveBlockerChecker);
 		setHeroPosition(hero);
 		
-		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
+		GameMovableDriverDefaultImpl driver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboardExtended(this.canvas, this.universe, hero);
-		pacDriver.setStrategy(keyStr);
-		pacDriver.setmoveBlockerChecker(moveBlockerChecker);
+		driver.setStrategy(keyStr);
+		driver.setmoveBlockerChecker(moveBlockerChecker);
 		this.canvas.addKeyListener(keyStr);
-		hero.setDriver(pacDriver);
+		hero.setDriver(driver);
 		this.universe.addGameEntity(hero);
 		hero.setHeroUnit(new UnitHorseMan("Billy"));
 		return hero;
 	}
 	
 	private Troll newTroll(MoveBlockerChecker moveBlockerChecker, Hero hero) {
-		Troll troll;
-		GameMovableDriverDefaultImpl driver = null;
-		Unit unitTroll;
-		driver = new GameMovableDriverDefaultImpl();
-		troll = new Troll(this.canvas);
+		Troll troll = new Troll(this.canvas);
 		setMonsterPosition(troll, hero);
-		driver.setStrategy(new MoveStrategyDynamicTarget(troll.getPosition(), hero.getTarget(), TROLLS_SPEED));
+		MoveStrategyDynamicTarget strategy = new MoveStrategyDynamicTarget(troll.getPosition(), hero.getPosition(), TROLLS_SPEED);
+		hero.addObserver(strategy);
+		GameMovableDriverDefaultImpl driver = new GameMovableDriverDefaultImpl();
+		driver.setStrategy(strategy);
 		driver.setmoveBlockerChecker(moveBlockerChecker);
 		troll.setDriver(driver);
 		this.universe.addGameEntity(troll);
-		unitTroll = new UnitCenturion("troll " + trollsCounter++);
+		Unit unitTroll = new UnitCenturion("troll " + monsterCounter++);
 		troll.setTrollUnit(unitTroll);
 		trolls.addUnit(unitTroll);
 		System.out.println("New troll created : " + unitTroll.getName() + ".");
@@ -158,17 +157,16 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	}
 	
 	private Dragon newDragon(MoveBlockerChecker moveBlockerChecker, Hero hero) {
-		Dragon dragon;
-		GameMovableDriverDefaultImpl driver = null;
-		Unit unitTroll;
-		driver = new GameMovableDriverDefaultImpl();
-		dragon = new Dragon(this.canvas);
+		Dragon dragon = new Dragon(this.canvas);
 		setMonsterPosition(dragon, hero);
-		driver.setStrategy(new MoveStrategyDynamicTarget(dragon.getPosition(), hero.getTarget(), TROLLS_SPEED));
+		MoveStrategyDynamicTarget strategy = new MoveStrategyDynamicTarget(dragon.getPosition(), hero.getPosition(), TROLLS_SPEED);
+		hero.addObserver(strategy);
+		GameMovableDriverDefaultImpl driver = new GameMovableDriverDefaultImpl();
+		driver.setStrategy(strategy);
 		driver.setmoveBlockerChecker(moveBlockerChecker);
 		dragon.setDriver(driver);
 		this.universe.addGameEntity(dragon);
-		unitTroll = new UnitCenturion("dragon " + trollsCounter++);
+		Unit unitTroll = new UnitCenturion("dragon " + monsterCounter++);
 		dragon.setTrollUnit(unitTroll);
 		trolls.addUnit(unitTroll);
 		System.out.println("New dragon created : " + unitTroll.getName() + ".");
@@ -219,7 +217,6 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			hero.setPosition(randomPoint);
 		}
 		while(overlapAnotherEntity(hero));
-		hero.setTarget(); // nÃ©cessite que la position soit fixÃ©e
 	}
 	
 	private void setMonsterPosition(GameMovable	monster, Hero hero) {

@@ -17,7 +17,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import fightforlife.Target;
 import fightforlife.managers.CustomSpriteManager;
 
 public class Hero extends GameMovable implements Drawable, GameEntity, Overlappable, Observable<Point> {
@@ -30,7 +29,6 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 	private MoveBlockerChecker moveBlocker;
 	private Unit hero;
 	private List<Observer<Point>> observers;
-	private Target target;
 	
 	public Hero(Canvas canvas, MoveBlockerChecker moveBlocker) {
 		this.spriteManager = new CustomSpriteManager("images/hero.png", canvas, RENDERING_SIZE, 9, 13);
@@ -115,14 +113,5 @@ public class Hero extends GameMovable implements Drawable, GameEntity, Overlappa
 	
 	public Unit getHeroUnit() {
 		return this.hero;
-	}
-	
-	public void setTarget() {
-		this.target = new Target(getPosition());
-		addObserver(target);
-	}
-	
-	public Target getTarget() {
-		return this.target;
 	}
 }
