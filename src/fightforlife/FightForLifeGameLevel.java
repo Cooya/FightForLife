@@ -27,7 +27,6 @@ import gameframework.moves_rules.MoveBlockerChecker;
 import gameframework.moves_rules.MoveBlockerCheckerDefaultImpl;
 import gameframework.moves_rules.MoveStrategyKeyboard;
 import gameframework.moves_rules.MoveStrategyRandom;
-import gameframework.moves_rules.MoveStrategyStraightLine;
 import gameframework.moves_rules.ObjectWithBoundedBox;
 import gameframework.moves_rules.OverlapProcessor;
 import gameframework.moves_rules.OverlapProcessorDefaultImpl;
@@ -35,7 +34,6 @@ import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
 import soldier.core.Unit;
 import soldier.core.UnitGroup;
 import soldier.units.UnitCenturion;
-import soldier.weapon.WeaponGun;
 import soldier.weapon.WeaponShield;
 import soldier.weapon.WeaponSword;
 
@@ -45,8 +43,8 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	private static final int SPRITE_SIZE = 16; // taille d'un élément
 	private static final int NUMBER_OF_TROLLS = 10;
 	private static final String BACKGROUND_IMAGE = "images/floor.jpg";
-	private static final Random random = new Random();
-	 public static UnitGroup composite=new UnitGroup("monstres");
+	private static final Random random = new Random();		
+	private static UnitGroup trolls = new UnitGroup("trolls");
 	private Canvas canvas;
 	private int[][] map;
 
@@ -122,21 +120,11 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			troll.setDriver(driver);
 			setPosition(troll);
 			this.universe.addGameEntity(troll);
-			troll.setTrollUnit(new UnitCenturion("troll"+i));
-			unitTroll=troll.getTrollUnit();
-			unitTroll.addEquipment(new WeaponShield());
+			unitTroll = new UnitCenturion("troll" + i);
+			troll.setTrollUnit(unitTroll);
+			trolls.addUnit(unitTroll);
 		}
-		//composite troll
-		for(int i = 0; i < 3; ++i) {
-			troll = new Troll(this.canvas);
-			troll.setDriver(driver);
-			setPosition(troll);
-			this.universe.addGameEntity(troll);
-			troll.setTrollUnit(new UnitCenturion("troll"+i));
-			unitTroll=troll.getTrollUnit();
-			composite.addUnit(unitTroll);
-			composite.addEquipment(new WeaponGun());
-		}
+		trolls.addEquipment(new WeaponShield()); // ajout d'une épée à tous les trolls
 	}
 	
 	private void generateWalls() {
