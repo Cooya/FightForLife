@@ -31,21 +31,9 @@ public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 	
 	public void overlapRule(Arrow arrow, Troll troll) {
-		boolean inComposite=false;
 		troll.getTrollUnit().parry(arrow.getHero().getHeroUnit().strike());
-		Iterator<Unit> it=FightForLifeGameLevel.composite.subUnits();
-		while(it.hasNext())
-			if(it.next().equals(troll)){
-				inComposite=true;
-				break;
-			}
-		if(inComposite=true)
-			FightForLifeGameLevel.composite.parry(arrow.getHero().getHeroUnit().strike());
-
 		if(troll.getTrollUnit().getHealthPoints()<=0){
 			this.universe.removeGameEntity(troll);
-			if(inComposite=true)
-				FightForLifeGameLevel.composite.removeUnit((Unit)troll);
 		}
 		this.universe.removeGameEntity(arrow);
 	}
