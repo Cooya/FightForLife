@@ -2,16 +2,18 @@ package fightforlife;
 
 import java.awt.Canvas;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Area;
 import java.util.Iterator;
 import java.util.Random;
 
+import fightforlife.entities.Arrow;
 import fightforlife.entities.Hero;
 import fightforlife.entities.Tree;
 import fightforlife.entities.Troll;
 import fightforlife.rules.FightForLifeMoveBlockers;
 import fightforlife.rules.FightForLifeOverlapRules;
+import fightforlife.strategies.MoveStrategyDynamicTarget;
 import fightforlife.strategies.MoveStrategyKeyboardExtended;
 import gameframework.core.CanvasDefaultImpl;
 import gameframework.core.GameDefaultImpl;
@@ -26,7 +28,6 @@ import gameframework.moves_rules.IntersectTools;
 import gameframework.moves_rules.MoveBlockerChecker;
 import gameframework.moves_rules.MoveBlockerCheckerDefaultImpl;
 import gameframework.moves_rules.MoveStrategyKeyboard;
-import gameframework.moves_rules.MoveStrategyRandom;
 import gameframework.moves_rules.ObjectWithBoundedBox;
 import gameframework.moves_rules.OverlapProcessor;
 import gameframework.moves_rules.OverlapProcessorDefaultImpl;
@@ -42,11 +43,14 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	private static final int NB_COLUMNS = 64;
 	private static final int SPRITE_SIZE = 16; // taille d'un élément
 	private static final int NUMBER_OF_TROLLS = 10;
+	private static final int TROLLS_SPEED = 4;
+	private static final int TROLLS_GENERATION_INTERVAL = 5000;
 	private static final String BACKGROUND_IMAGE = "images/floor.jpg";
 	private static final Random random = new Random();		
-	private static UnitGroup trolls = new UnitGroup("trolls");
+	private static Unit trolls = new UnitGroup("trolls");
 	private Canvas canvas;
 	private int[][] map;
+	private int trollsCounter;
 
 	public FightForLifeGameLevel(GameDefaultImpl game) {
 		super(game);
@@ -56,6 +60,8 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		for(int i = 0; i < map.length; ++i)
 			for(int j = 0; j < map[i].length; ++j)
 				this.map[i][j] = 0;
+		
+		this.trollsCounter = 0;
 	}
 
 	@Override
@@ -84,7 +90,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		// génération des positions des murs
 		generateWalls();
 		
-		// ajout des différentes entités à l'univers
+		// ajout des différentes entités statiques à l'univers
 		for(int i = 0; i < this.map.length; ++i) {
 			for(int j = 0; j < this.map[0].length; ++j) {
 				switch(this.map[i][j]) {
@@ -94,8 +100,25 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		}
 		
 		// instanciation et positionnement du héros
+		Hero hero = newHero(moveBlockerChecker);
+		
+		// instanciation et positionnement des trolls
+		for(int i = 0; i < NUMBER_OF_TROLLS; ++i)
+			newTroll(moveBlockerChecker, hero);
+		
+		// ajout d'une épée à tous les trolls
+		trolls.addEquipment(new WeaponShield());
+		
+		// chargement de la classe Arrow pour éviter un petit lag au premier tir du joueur
+		new Arrow(canvas, hero);
+		
+		// lancement de la boucle de génération de trolls
+		runTrollsGenerationLoop(moveBlockerChecker, hero);
+	}
+	
+	private Hero newHero(MoveBlockerChecker moveBlockerChecker) {
 		Hero hero = new Hero(this.canvas, moveBlockerChecker);
-		setPosition(hero);
+		setHeroPosition(hero);
 		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboardExtended(this.canvas, this.universe, hero);
 		pacDriver.setStrategy(keyStr);
@@ -105,26 +128,26 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		this.universe.addGameEntity(hero);
 		hero.setHeroUnit(new UnitCenturion("Billy"));
 		hero.getHeroUnit().addEquipment(new WeaponSword());
-
-		
-		// instanciation et positionnement des trolls
+		return hero;
+	}
+	
+	private Troll newTroll(MoveBlockerChecker moveBlockerChecker, Hero hero) {
 		Troll troll;
 		GameMovableDriverDefaultImpl driver = null;
 		Unit unitTroll;
 		
-		for(int i = 0; i < NUMBER_OF_TROLLS; ++i) {
-			driver = new GameMovableDriverDefaultImpl();
-			driver.setStrategy(new MoveStrategyRandom());
-			driver.setmoveBlockerChecker(moveBlockerChecker);
-			troll = new Troll(this.canvas);
-			troll.setDriver(driver);
-			setPosition(troll);
-			this.universe.addGameEntity(troll);
-			unitTroll = new UnitCenturion("troll" + i);
-			troll.setTrollUnit(unitTroll);
-			trolls.addUnit(unitTroll);
-		}
-		trolls.addEquipment(new WeaponShield()); // ajout d'une épée à tous les trolls
+		driver = new GameMovableDriverDefaultImpl();
+		troll = new Troll(this.canvas);
+		setTrollPosition(troll, hero);
+		driver.setStrategy(new MoveStrategyDynamicTarget(troll.getPosition(), hero.getTarget(), TROLLS_SPEED));
+		driver.setmoveBlockerChecker(moveBlockerChecker);
+		troll.setDriver(driver);
+		this.universe.addGameEntity(troll);
+		unitTroll = new UnitCenturion("troll " + trollsCounter++);
+		troll.setTrollUnit(unitTroll);
+		trolls.addUnit(unitTroll);
+		System.out.println("New troll created : " + unitTroll.getName() + ".");
+		return troll;
 	}
 	
 	private void generateWalls() {
@@ -156,15 +179,27 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			}
 		}
 	}
-	
-	private void setPosition(GameMovable movable) {
+
+	private void setHeroPosition(Hero hero) {
 		Point randomPoint = new Point();
 		do {
 			randomPoint.x = random.nextInt(this.map[0].length) * 16;
 			randomPoint.y = random.nextInt(this.map.length) * 16;
-			movable.setPosition(randomPoint);
+			hero.setPosition(randomPoint);
 		}
-		while(overlapAnotherEntity(movable));
+		while(overlapAnotherEntity(hero));
+		hero.setTarget(); // nécessite que la position soit fixée
+	}
+	
+	private void setTrollPosition(Troll troll, Hero hero) {
+		Point heroPosition = hero.getPosition();
+		Point randomPoint = new Point();
+		do {
+			randomPoint.x = random.nextInt(this.map[0].length) * 16;
+			randomPoint.y = random.nextInt(this.map.length) * 16;
+			troll.setPosition(randomPoint);
+		}
+		while(overlapAnotherEntity(troll) || randomPoint.distance(heroPosition) < 100);
 	}
 	
 	private boolean overlapAnotherEntity(GameMovable movable) {
@@ -181,9 +216,33 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 			}
 			else
 				shape2 = ((ObjectWithBoundedBox) entity).getBoundingBox();
-			if(shape.intersects((Rectangle) shape2))
+			if(shapeIntersection(shape, shape2))
 				return true;
 		}
 		return false;
+	}
+
+	private static boolean shapeIntersection(Shape shapeA, Shape shapeB) {
+	   Area areaA = new Area(shapeA);
+	   areaA.intersect(new Area(shapeB));
+	   return !areaA.isEmpty();
+	}
+	
+	private void runTrollsGenerationLoop(MoveBlockerChecker moveBlockerChecker, Hero hero) {
+		int interval = TROLLS_GENERATION_INTERVAL;
+		new Thread() {
+			public void run() {
+				while(true) {
+					try {
+						synchronized(this) {
+							wait(interval - 100);
+						}
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					newTroll(moveBlockerChecker, hero);
+				}
+			}	
+		}.start();
 	}
 }

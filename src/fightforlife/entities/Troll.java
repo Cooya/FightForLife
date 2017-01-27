@@ -16,6 +16,7 @@ import fightforlife.CustomSpriteManager;
 
 public class Troll extends GameMovable implements Drawable, GameEntity, Overlappable {
 	private static final int RENDERING_SIZE = 32;
+	private static final int BOUNDING_BOX_SIZE = 40;
 	
 	private final SpriteManager spriteManager;
 	private boolean movable = true;
@@ -25,7 +26,7 @@ public class Troll extends GameMovable implements Drawable, GameEntity, Overlapp
 		this.spriteManager = new CustomSpriteManager("images/troll.png", canvas, RENDERING_SIZE, 9, 13);
 		this.spriteManager.setTypes("", "", "", "", "strike_up", "strike_left", "strike_down", "strike_right", "up", "left", "down", "right");
 	}
-
+	
 	@Override
 	public void draw(Graphics g) {
 		String spriteType = "";
@@ -54,7 +55,7 @@ public class Troll extends GameMovable implements Drawable, GameEntity, Overlapp
 
 	@Override
 	public Rectangle getBoundingBox() {
-		return new Rectangle(0, 0, RENDERING_SIZE, RENDERING_SIZE);
+		return new Rectangle(0, 0, BOUNDING_BOX_SIZE, BOUNDING_BOX_SIZE);
 	}
 	
 	public Unit getTrollUnit() {

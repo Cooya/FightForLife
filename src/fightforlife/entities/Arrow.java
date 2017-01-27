@@ -16,12 +16,12 @@ import gameframework.core.Overlappable;
 import gameframework.moves_rules.SpeedVectorDefaultImpl;
 
 public class Arrow extends GameMovable implements Drawable, GameEntity, Overlappable {
+	private static final int RENDERING_SIZE = 32;
+	private static final int SPEED = 30; // ne doit pas être égal ou supérieur à RENDERING_SIZE
 	private static final String IMAGE_PATH = "images/arrow.png";
 	private static final String IMAGE_DIR = "images/arrow/";
 	private static final String IMAGE_ORIENTATION = "up";
-
-	private static final int RENDERING_SIZE = 48;
-	private static final int SPEED = 47; // ne doit pas être égal ou supérieur à RENDERING_SIZE
+	
 	private static DrawableImage image = null;
 	private static ImageManager imageManager;
 	

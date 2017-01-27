@@ -6,6 +6,7 @@ import fightforlife.entities.Troll;
 import gameframework.core.GameUniverse;
 import gameframework.core.ObservableValue;
 import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
+import soldier.core.Unit;
 
 public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
 	private final ObservableValue<Boolean> endOfGame;
@@ -25,10 +26,12 @@ public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 	
 	public void overlapRule(Arrow arrow, Troll troll) {
-		troll.getTrollUnit().parry(arrow.getHero().getHeroUnit().strike());
-		if(troll.getTrollUnit().getHealthPoints()<=0)
+		Unit trollUnit = troll.getTrollUnit();
+		
+		trollUnit.parry(arrow.getHero().getHeroUnit().strike());
+		if(troll.getTrollUnit().getHealthPoints() <= 0)
 			this.universe.removeGameEntity(troll);
 		this.universe.removeGameEntity(arrow);
-		System.out.println("troll tiré "+troll.getTrollUnit().getName() +" "+ troll.getTrollUnit().getHealthPoints());
+		System.out.println("troll touché : " + trollUnit.getName() + " " + trollUnit.getHealthPoints());
 	}
 }
