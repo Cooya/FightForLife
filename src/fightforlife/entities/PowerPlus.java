@@ -10,17 +10,17 @@ import gameframework.core.DrawableImage;
 import gameframework.core.GameEntity;
 import gameframework.core.Overlappable;
 
-public class PowerPlus implements Drawable,Overlappable, GameEntity  {
+public class PowerPlus implements Drawable, Overlappable, GameEntity  {
 	private static final int RENDERING_SIZE = 16;
 	private static DrawableImage image = null;
 	
 	int x, y;
 
-	public PowerPlus(Canvas canvas, Point p) {
+	public PowerPlus(Canvas canvas, int x, int y) {
 		if(image == null)
 			image = new DrawableImage("images/power.png", canvas);
-		this.x = p.x;
-		this.y = p.y;
+		this.x = x;
+		this.y = y;
 	}
 
 	@Override

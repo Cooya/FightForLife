@@ -12,7 +12,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import fightforlife.CustomSpriteManager;
+import fightforlife.managers.CustomSpriteManager;
 
 public class Troll extends GameMovable implements Drawable, GameEntity, Overlappable {
 	private static final int RENDERING_SIZE = 32;

@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import fightforlife.ImageManager;
+import fightforlife.managers.ImageManager;
 import fightforlife.strategies.MoveStrategyStraightLineExtended;
 import gameframework.core.Drawable;
 import gameframework.core.DrawableImage;

@@ -97,8 +97,8 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		for(int i = 0; i < this.map.length; ++i) {
 			for(int j = 0; j < this.map[0].length; ++j) {
 				switch(this.map[i][j]) {
-					case 1: universe.addGameEntity(new Tree(this.canvas, j * SPRITE_SIZE, i * SPRITE_SIZE));
-					
+					case 1: this.universe.addGameEntity(new Tree(this.canvas, j * SPRITE_SIZE, i * SPRITE_SIZE)); break;
+					case 2: this.universe.addGameEntity(new PowerPlus(this.canvas, j * SPRITE_SIZE, i * SPRITE_SIZE)); break;
 				}
 			}
 		}
@@ -127,7 +127,6 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 	private Hero newHero(MoveBlockerChecker moveBlockerChecker) {
 		Hero hero = new Hero(this.canvas, moveBlockerChecker);
 		setHeroPosition(hero);
-		this.universe.addGameEntity(new PowerPlus(canvas, new Point(50,50)));
 		
 		GameMovableDriverDefaultImpl pacDriver = new GameMovableDriverDefaultImpl();
 		MoveStrategyKeyboard keyStr = new MoveStrategyKeyboardExtended(this.canvas, this.universe, hero);
@@ -204,13 +203,19 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 					break;
 			}
 		}
+		
+		do {
+			randomX = random.nextInt(this.map[0].length);
+			randomY = random.nextInt(this.map.length);
+		} while(this.map[randomY][randomX] != 0);
+		this.map[randomY][randomX] = 2;
 	}
 
 	private void setHeroPosition(Hero hero) {
 		Point randomPoint = new Point();
 		do {
-			randomPoint.x = random.nextInt(this.map[0].length) * 16;
-			randomPoint.y = random.nextInt(this.map.length) * 16;
+			randomPoint.x = random.nextInt(this.map[0].length) * SPRITE_SIZE;
+			randomPoint.y = random.nextInt(this.map.length) * SPRITE_SIZE;
 			hero.setPosition(randomPoint);
 		}
 		while(overlapAnotherEntity(hero));
@@ -221,8 +226,8 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		Point heroPosition = hero.getPosition();
 		Point randomPoint = new Point();
 		do {
-			randomPoint.x = random.nextInt(this.map[0].length) * 16;
-			randomPoint.y = random.nextInt(this.map.length) * 16;
+			randomPoint.x = random.nextInt(this.map[0].length) * SPRITE_SIZE;
+			randomPoint.y = random.nextInt(this.map.length) * SPRITE_SIZE;
 			monster.setPosition(randomPoint);
 		}
 		while(overlapAnotherEntity(monster) || randomPoint.distance(heroPosition) < 100);

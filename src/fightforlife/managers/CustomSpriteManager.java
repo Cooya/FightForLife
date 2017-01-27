@@ -1,4 +1,4 @@
-package fightforlife;
+package fightforlife.managers;
 
 import java.awt.Canvas;
 import java.lang.reflect.Field;

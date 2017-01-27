@@ -17,8 +17,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import fightforlife.CustomSpriteManager;
 import fightforlife.Target;
+import fightforlife.managers.CustomSpriteManager;
 
 public class Hero extends GameMovable implements Drawable, GameEntity, Overlappable, Observable<Point> {
 	private static final int RENDERING_SIZE = 32;
