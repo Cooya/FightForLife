@@ -9,7 +9,6 @@ import gameframework.core.Drawable;
 import gameframework.core.DrawableImage;
 import gameframework.core.GameEntity;
 import gameframework.core.Overlappable;
-import gameframework.moves_rules.MoveBlocker;
 
 public class PowerPlus implements Drawable,Overlappable, GameEntity  {
 	private static final int RENDERING_SIZE = 16;
@@ -29,8 +28,6 @@ public class PowerPlus implements Drawable,Overlappable, GameEntity  {
 		g.drawImage(image.getImage(), this.x, this.y, RENDERING_SIZE, RENDERING_SIZE, null);
 	}
 
-	
-
 	@Override
 	public Rectangle getBoundingBox() {
 		return (new Rectangle(this.x, this.y, RENDERING_SIZE, RENDERING_SIZE));
@@ -38,13 +35,6 @@ public class PowerPlus implements Drawable,Overlappable, GameEntity  {
 
 	@Override
 	public Point getPosition() {
-		// TODO Auto-generated method stub
 		return (new Point(this.x, this.y));
 	}
-
-
-	
-
-
-
 }

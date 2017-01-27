@@ -1,18 +1,15 @@
 package fightforlife.rules;
 
 import fightforlife.entities.Arrow;
+import fightforlife.entities.Dragon;
 import fightforlife.entities.Hero;
 import fightforlife.entities.PowerPlus;
 import fightforlife.entities.Troll;
-import fightforlife.entities.Troll2;
 import gameframework.core.GameUniverse;
 import gameframework.core.ObservableValue;
+import gameframework.moves_rules.OverlapRulesApplierDefaultImpl;
 import soldier.core.Unit;
-import soldier.core.BehaviorSoldier;
-import soldier.core.Weapon;
-import soldier.weapon.WeaponShield;
 import soldier.weapon.WeaponSword;
-import soldier.weapon.WeaponVisitor;
 
 public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
 	private final ObservableValue<Boolean> endOfGame;
@@ -32,41 +29,43 @@ public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
 	}
 	
 	public void overlapRule(Hero hero, PowerPlus power) {
-			this.life.setValue(this.life.getValue()+1);
+			this.life.setValue(this.life.getValue() + 1);
 			hero.getHeroUnit().addEquipment(new WeaponSword());
 			this.universe.removeGameEntity(power);
 	}
 	
 	public void overlapRule(Hero hero, Troll troll) {
-		if(this.life.getValue()==0)
+		if(this.life.getValue() == 0)
 			this.endOfGame.setValue(true);
 		else{ 
-			this.life.setValue(this.life.getValue()-1);
+			this.life.setValue(this.life.getValue() - 1);
 			this.universe.removeGameEntity(troll);
 		}
 	}
-	public void overlapRule(Hero hero, Troll2 troll) {
-		if(this.life.getValue()==0)
+	
+	public void overlapRule(Hero hero, Dragon dragon) {
+		if(this.life.getValue() == 0)
 			this.endOfGame.setValue(true);
-		else{ 
-			this.life.setValue(this.life.getValue()-1);
-			this.universe.removeGameEntity(troll);
+		else { 
+			this.life.setValue(this.life.getValue() - 2);
+			this.universe.removeGameEntity(dragon);
 		}
 	}
-	public  void overlapRule(Arrow arrow, Troll2 troll) {
-		score.setValue(score.getValue()+1);
-		troll.getTrollUnit().parry(arrow.getHero().getHeroUnit().strike());
-		if(troll.getTrollUnit().getHealthPoints()<=0)
-			this.universe.removeGameEntity(troll);
+	
+	public  void overlapRule(Arrow arrow, Dragon dragon) {
+		score.setValue(score.getValue() + 2);
+		dragon.getTrollUnit().parry(arrow.getHero().getHeroUnit().strike());
+		if(dragon.getTrollUnit().getHealthPoints()<=0)
+			this.universe.removeGameEntity(dragon);
 		this.universe.removeGameEntity(arrow);
-		System.out.println("life "+troll.getTrollUnit().getHealthPoints());
 	}
+	
 	public void overlapRule(Arrow arrow, Troll troll) {
 		Unit trollUnit = troll.getTrollUnit();
 
 		score.setValue(score.getValue()+1);
-		troll.getTrollUnit().parry(arrow.getHero().getHeroUnit().strike());
-		if(troll.getTrollUnit().getHealthPoints()<=0)
+		trollUnit.parry(arrow.getHero().getHeroUnit().strike());
+		if(trollUnit.getHealthPoints()<=0)
 			this.universe.removeGameEntity(troll);
 		this.universe.removeGameEntity(arrow);
 	}

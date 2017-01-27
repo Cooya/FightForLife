@@ -14,14 +14,14 @@ import java.awt.Rectangle;
 
 import fightforlife.CustomSpriteManager;
 
-public class Troll2 extends GameMovable implements Drawable, GameEntity, Overlappable {
+public class Dragon extends GameMovable implements Drawable, GameEntity, Overlappable {
 	private static final int RENDERING_SIZE = 55;
 	
 	private final SpriteManager spriteManager;
 	private boolean movable = true;
 	private Unit troll;
 
-	public Troll2(Canvas canvas) {
+	public Dragon(Canvas canvas) {
 		this.spriteManager = new CustomSpriteManager("images/troll2.png", canvas, RENDERING_SIZE,1 , 4);
 		this.spriteManager.setTypes("down", "left", "right", "up");
 	}
