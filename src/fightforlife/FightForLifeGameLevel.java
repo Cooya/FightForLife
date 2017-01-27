@@ -268,7 +268,8 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 					try {
 						synchronized(this) {
 							wait(interval);
-							interval -= 100;
+							if(interval > 1000)
+								interval -= 100;
 						}
 					} catch (InterruptedException e) {
 						e.printStackTrace();

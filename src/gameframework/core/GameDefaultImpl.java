@@ -65,7 +65,7 @@ public class GameDefaultImpl implements Game, Observer {
 	}
 
 	public void createGUI() {
-		f = new Frame("Default Game");
+		f = new Frame("Fight for Life");
 		f.dispose();
 
 		createMenuBar();
