@@ -77,7 +77,7 @@ public class FightForLifeGameLevel extends GameLevelDefaultImpl {
 		
 		// instanciation du processeur des chevauchements et mise en place de nos règles de chevauchements
 		OverlapProcessor overlapProcessor = new OverlapProcessorDefaultImpl();
-		OverlapRulesApplierDefaultImpl overlapRules = new FightForLifeOverlapRules(super.endOfGame,life[0],score[0]);
+		OverlapRulesApplierDefaultImpl overlapRules = new FightForLifeOverlapRules(life[0], score[0]);
 		overlapProcessor.setOverlapRules(overlapRules);
 
 		// instanciation de l'univers du jeu et ajout aux règles

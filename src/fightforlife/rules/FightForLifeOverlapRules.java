@@ -12,13 +12,11 @@ import soldier.core.Unit;
 import soldier.weapon.WeaponSword;
 
 public class FightForLifeOverlapRules extends OverlapRulesApplierDefaultImpl {
-	private final ObservableValue<Boolean> endOfGame;
 	private GameUniverse universe;
 	private final ObservableValue<Integer> score;
 	private final ObservableValue<Integer> life;
 	
-	public FightForLifeOverlapRules(ObservableValue<Boolean> endOfGame,ObservableValue<Integer> life,ObservableValue<Integer> score) {
-		this.endOfGame = endOfGame;
+	public FightForLifeOverlapRules(ObservableValue<Integer> life, ObservableValue<Integer> score) {
 		this.score=score;
 		this.life=life;
 	}
